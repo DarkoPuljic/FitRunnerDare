@@ -1,0 +1,46 @@
+<resources>
+    <string-array name="weight_options">
+        <item>50 kg</item>
+        <item>60 kg</item>
+        <item>70 kg</item>
+        <item>80 kg</item>
+        <item>90 kg</item>
+        <item>100+ kg</item>
+        <!-- Dodajte ostale opcije po potrebi -->
+    </string-array>
+
+    <string-array name="height_options">
+        <item>150 cm</item>
+        <item>160 cm</item>
+        <item>170 cm</item>
+        <item>180 cm</item>
+        <item>190 cm</item>
+        <item>200 cm</item>
+        <item>210+ cm</item>
+        <!-- Dodajte ostale opcije po potrebi -->
+    </string-array>
+
+    <string-array name="age_options">
+        <item>18 godina</item>
+        <item>19 godina</item>
+        <item>20 godina</item>
+        <item>21 godina</item>
+        <item>22 godina</item>
+        <item>23 godina</item>
+        <item>24 godina</item>
+        <item>25 godina</item>
+        <item>26 godina</item>
+        <item>27 godina</item>
+        <item>28 godina</item>
+        <item>29 godina</item>
+        <item>30 godina</item>
+        <item>31 godina</item>
+        <item>32 godina</item>
+        <item>33 godina</item>
+        <item>34 godina</item>
+        <item>35+ godina</item>
+        <!-- Dodajte ostale opcije po potrebi -->
+    </string-array>
+
+    <string name="app_name">FitRunner</string>
+</resources>
