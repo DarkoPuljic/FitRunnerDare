@@ -1,55 +1,81 @@
 package com.example.myapplication;
 
 import android.content.Intent;
-import android.media.Image;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    ImageButton ret;
+    ImageButton btnret;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        ret = findViewById(R.id.btn_return_set);
+        btnret = findViewById(R.id.btn_return_his);
 
-        ret.setOnClickListener(v -> {
+        SharedPreferences sharedPreferences = getSharedPreferences("StopData", MODE_PRIVATE);
+        Map<String, ?> allStopData = sharedPreferences.getAll();
+        LinearLayout historyLayout = findViewById(R.id.history_layout);
+
+        for (Map.Entry<String, ?> entry : allStopData.entrySet()) {
+            String key = entry.getKey();
+            long stopTime = sharedPreferences.getLong(key + "_time", 0);
+            int distance = sharedPreferences.getInt(key + "_distance", 0);
+            long dateInMillis = sharedPreferences.getLong(key + "_date", 0);
+
+            String formattedTime = formatTime(stopTime);
+            String formattedDate = formatDate(dateInMillis);
+
+            addStopDataView(historyLayout, formattedTime, distance, formattedDate);
+        }
+        btnret.setOnClickListener(v -> {
             Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
             startActivity(intent);
         });
-        // Get data from Intent
-        long time = getIntent().getLongExtra("time", 0);
-        int distance = getIntent().getIntExtra("distance", 0);
-        long dateInMillis = getIntent().getLongExtra("date", 0);
+        Button clearButton = findViewById(R.id.clear_button);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Clear all entries from SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
+                editor.apply();
 
-        // Convert date to string
-        String dateString = DateFormat.getDateTimeInstance().format(new Date(dateInMillis));
+                // Remove all views from historyLayout
+                historyLayout.removeAllViews();
+            }
+        });
+    }
 
-        // Find CardView in layout
-        CardView cardView = findViewById(R.id.card_view_history);
+    private String formatTime(long millis) {
+        long seconds = (millis / 1000) % 60;
+        long minutes = (millis / (1000 * 60)) % 60;
+        long hours = millis / (1000 * 60 * 60);
+        return String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, seconds);
+    }
 
-        // Find TextViews in CardView layout
-        TextView timeTextView = cardView.findViewById(R.id.text_time);
-        TextView distanceTextView = cardView.findViewById(R.id.text_distance);
-        TextView dateTextView = cardView.findViewById(R.id.text_date);
+    private String formatDate(long millis) {
+        DateFormat dateFormat = DateFormat.getDateTimeInstance();
+        return dateFormat.format(new Date(millis));
+    }
 
-        // Set data to TextViews
-        timeTextView.setText("Time: " + time + " milliseconds");
-        distanceTextView.setText("Distance: " + distance + " meters");
-        dateTextView.setText("Date: " + dateString);
+    private void addStopDataView(ViewGroup parent, String time, int distance, String date) {
+        TextView textView = new TextView(this);
+        textView.setText("Stop Time: " + time + ", Distance: " + distance + " meters, Date: " + date);
+        parent.addView(textView);
     }
 }

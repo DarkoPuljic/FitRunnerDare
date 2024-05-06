@@ -9,7 +9,7 @@
     android:background="@color/basic" >
 
     <ImageButton
-        android:id="@+id/btn_return_set"
+        android:id="@+id/btn_return_his"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
         android:layout_width="67dp"
@@ -74,31 +74,24 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/history_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="70dp"
         android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintTop_toTopOf="@+id/guideline5"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/text_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time: " />
+    <Button
+        android:id="@+id/clear_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="80dp"
+        android:text="Delete"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        android:background="@drawable/btn"/>
 
-        <TextView
-            android:id="@+id/text_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Distance: " />
-
-        <TextView
-            android:id="@+id/text_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date: " />
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

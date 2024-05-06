@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private CountDownTimer timer;
     private TextView timerText;
     private int distanceInMeters;
-    private ImageButton btnset;
+    private boolean dataSaved = false;
+    private ImageButton btnset, btnhis;
 
 
     @Override
@@ -52,9 +54,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         distanceText = findViewById(R.id.distance_text);
         timerText = findViewById(R.id.timer_text);
         btnset = findViewById(R.id.btn_main_set);
+        btnhis = findViewById(R.id.btn_main_his);
 
         btnset.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        });
+        btnhis.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
             startActivity(intent);
         });
 
@@ -134,6 +141,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onStopButtonClick(View view) {
         stopTimeMillis = System.currentTimeMillis();
 
+        long timeDifferenceMillis = stopTimeMillis - startTimeMillis;
         // Stop the timer
         if (timer != null) {
             timer.cancel();
@@ -154,17 +162,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 stopLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                 if (startLatLng != null) {
 
-                    // Create an Intent to start the HistoryActivity
-                    Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
-                    // Pass data to HistoryActivity
-                    intent.putExtra("time", timer.toString());
-                    intent.putExtra("distance", distanceInMeters);
-                    intent.putExtra("date", System.currentTimeMillis()); // Use current date
-                    startActivity(intent);
-                    // Calculate the distance between start and stop positions
                     distanceInMeters = (int) calculateDistance(startLatLng, stopLatLng);
                     distanceText.setText("Distance: " + distanceInMeters + " meters");
-                    // Calculate the time difference
+                    SharedPreferences sharedPreferences = getSharedPreferences("StopData", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    String key = "stop_" + System.currentTimeMillis();
+                    editor.putLong(key + "_time", stopTimeMillis);
+                    editor.putInt(key + "_distance", distanceInMeters);
+                    editor.putLong(key + "_date", System.currentTimeMillis()); // Save current date
+                    editor.apply();
                 } else {
                     Toast.makeText(MainActivity.this, "Please set start position first", Toast.LENGTH_SHORT).show();
                 }
