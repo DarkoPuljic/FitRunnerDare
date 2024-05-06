@@ -10,6 +10,12 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean dataSaved = false;
     private ImageButton btnset, btnhis;
 
+    private static final double CALORIES_BURNED_PER_MINUTE_WALKING = 4.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +71,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
             startActivity(intent);
         });
-
+        Button stopButton = findViewById(R.id.stop_button);
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onStopButtonClick(v);
+                // Calculate calories burned and update UI
+                double caloriesBurned = calculateCaloriesBurned("Walking", getElapsedTimeInMinutes());
+                updateCaloriesBurnedTextView(caloriesBurned);
+            }
+        });
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -197,6 +214,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         long hours = (elapsedTimeMillis / (1000 * 60 * 60)) % 24;
         String timeString = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
         timerText.setText("Elapsed Time: " + timeString);
+    }
+
+
+    private double calculateCaloriesBurned(String activity, double durationInMinutes) {
+        // This method calculates calories burned based on the activity and duration
+        // You can replace this with your actual calorie calculation algorithm
+        if (activity.equalsIgnoreCase("Walking")) {
+            return CALORIES_BURNED_PER_MINUTE_WALKING * durationInMinutes;
+        }
+        return 0.0; // Default value
+    }
+
+    private double getElapsedTimeInMinutes() {
+        // This method calculates the elapsed time in minutes
+        long elapsedTimeMillis = stopTimeMillis - startTimeMillis;
+        return (double) elapsedTimeMillis / (1000 * 60); // Convert milliseconds to minutes
+    }
+
+    private void updateCaloriesBurnedTextView(double caloriesBurned) {
+        // Update the TextView with the calculated calories burned
+        TextView caloriesBurnedTextView = findViewById(R.id.caloriesBurnedTextView);
+        caloriesBurnedTextView.setText("Calories Burned: " + caloriesBurned);
     }
 }
 

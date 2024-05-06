@@ -142,6 +142,22 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2"
         app:srcCompat="@android:drawable/ic_dialog_info" />
 
+    <!-- ImageButton for settings -->
+
+    <TextView
+        android:id="@+id/caloriesBurnedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:text="Calories Burned: "
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- ImageButton for history -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
