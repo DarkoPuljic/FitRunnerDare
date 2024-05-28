@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
-    android:background="@color/basic">
+    android:background="@drawable/pozadina"
+    tools:context=".SettingsActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
@@ -54,23 +54,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="148dp"
+        android:background="@drawable/btn"
         android:text="Profile"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5"
-        android:background="@drawable/btn"/>
+        app:layout_constraintTop_toTopOf="@+id/guideline5" />
 
     <ImageButton
         android:id="@+id/btn_return_set"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
         android:layout_width="67dp"
         android:layout_height="55dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:adjustViewBounds="true"
         android:background="@color/basic"
         android:importantForAccessibility="no"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline5"
         app:srcCompat="@mipmap/returnbtn_foreground"
